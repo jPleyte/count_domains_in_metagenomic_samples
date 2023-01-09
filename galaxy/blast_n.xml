@@ -1,0 +1,83 @@
+<tool id="jdebug_collections_receiver_zero" name="jDebug Collections Receiver Zero" version="0.0.0">
+	<description>
+		Submit a collection of fasta reads to blastn and output the organism  
+	</description>
+
+	<requirements>
+	</requirements>
+	
+	<version_command><![CDATA[
+		python $__tool_directory__/../python/src/jp/banjer/reproduce/metagenomics/pmid33033132/jdebug_collections_receiver_zero.py --version
+		]]>
+	</version_command>
+	
+	<command detect_errors="exit_code"><![CDATA[
+		output_directory="\$(dirname ${summary_out_file})" &&
+		## echo "output_directory=\$output_directory" &&
+		tmp_file_name_1="\$(basename ${fastq_collection.forward})".size &&
+		echo "tmp_file_name_1=\$tmp_file_name_1" && 
+		python $__tool_directory__/../python/src/jp/banjer/reproduce/metagenomics/pmid33033132/jdebug_collections_receiver_zero.py
+				--in_file "${fastq_collection.forward}" 
+				--out_file "\$output_directory/\$tmp_file_name_1" &&
+		tmp_file_name_2="\$(basename ${fastq_collection.reverse})".size &&
+		python $__tool_directory__/../python/src/jp/banjer/reproduce/metagenomics/pmid33033132/jdebug_collections_receiver_zero.py
+				--in_file "${fastq_collection.reverse}" 
+				--out_file "\$output_directory/\$tmp_file_name_2" && 		
+		cat "\$output_directory/\$tmp_file_name_1" > "${summary_out_file}" &&
+		cat "\$output_directory/\$tmp_file_name_2" >> "${summary_out_file}"
+	]]></command>
+	
+	<environment_variables>
+		<environment_variable name="PYTHONPATH">$__tool_directory__/../python/src</environment_variable>
+	</environment_variables>
+	
+	<inputs>
+		<!-- type="data" -->
+		<param name="fasta_collection" 
+		       optional="false" 
+		       format="fastqsanger,fastqsanger.gz,fastq"
+		       type="data_collection" 
+			   collection_type="paired" 
+		       label="Select a paired collection"
+		       help="A dataset collection of paired fastq files."/>
+	</inputs>
+	
+	<outputs>
+		<data name="summary_out_file" label="Summary of input file(s)" format="txt"/>
+	</outputs>
+	
+	<tests>
+   		<test>
+  			<param name="fastq_collection">
+  				<collection type="paired">
+                    <element name="forward" value="SRR12352293_1.fastq" ftype="fastqsanger" />
+                    <element name="reverse" value="SRR12352293_2.fastq" ftype="fastqsanger" />
+  				</collection>
+  			</param>  			
+  			<output name="summary_out_file" ftype="txt">
+  				<assert_contents>
+  					<has_n_lines n="2"/>
+  				</assert_contents>
+  			</output>
+  		</test>
+	</tests>
+	
+	<help><![CDATA[
+		Usage: jdebug_collections_receiver_zero.py [--version]
+												   --in_file IN_FILE 
+												   --out_file OUT_FILE
+		]]>
+	</help>
+	
+	<citations>
+  		<citation type="bibtex">
+		@misc{tx_eff_control,
+		  author = {Pleyte, Jay},
+		  year = {2022},
+		  title = {Test Script},
+		  publisher = {OHSU},
+		  url = {https://github.com/jPleyte/reproduce-results-from-metagenomics-of-wastewater-influent-from-southern-california},
+		}
+		</citation>
+  	</citations>
+</tool>

@@ -1,0 +1,12 @@
+owner: "jPleyte"
+remote_repository_url: "https://github.com/jPleyte/reproduce-results-from-metagenomics-of-wastewater-influent-from-southern-california"
+type: "unrestricted"
+categories:
+  - "Experiments"
+repositories:
+  metagenomics_experiment:
+    description: "Reproduce the metagenomics experiment from PMID: 33033132"
+    include:
+      - blast_n.xml
+      - sra_download.xml
+      - ../python/**
