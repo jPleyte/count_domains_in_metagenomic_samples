@@ -130,3 +130,5 @@ dmypy.json
 /.project
 /.pydevproject
 /.settings/
+galaxy/tool_test_output.html
+galaxy/tool_test_output.json

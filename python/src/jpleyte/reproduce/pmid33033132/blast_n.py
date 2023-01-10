@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 # encoding: utf-8
 '''
-This script takes a file as input and creates a copy of the file.
+This script takes a fasta file and writes out the size of the file
 
 @author:     jpleyte
 @copyright:  2022 Jay Pleyte. All rights reserved.
