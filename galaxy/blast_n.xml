@@ -1,10 +1,11 @@
-<tool id="blast_n" name="blast_n" version="0.0.2">
+<tool id="blast_n" name="blast_n" version="0.0.3">
 	<description>
-		Submit a collection of fasta reads to blastn and output the organism  
+		Submit a fasta file to blastn and output the xml response.  
 	</description>
 
 	<requirements>
-	</requirements>
+		<requirement type="package" version="1.79">biopython</requirement>
+ 	</requirements>
 	
 	<version_command><![CDATA[
 		python $__tool_directory__/../python/src/jpleyte/reproduce/pmid33033132/blast_n.py --version
@@ -14,7 +15,7 @@
 	<command detect_errors="exit_code"><![CDATA[
 		python $__tool_directory__/../python/src/jpleyte/reproduce/pmid33033132/blast_n.py
 			--in_file "${fasta_file}" 
-			--out_file "${summary_out_file}"
+			--out_file "${blastn_result_file}"
 	]]>
 	</command>
 	
@@ -32,15 +33,15 @@
 	</inputs>
 	
 	<outputs>
-		<data name="summary_out_file" label="Summary of input file(s)" format="txt"/>
+		<data name="blastn_result_file" label="blastn query result" format="xml"/>
 	</outputs>
 	
 	<tests>
    		<test>
-  			<param name="fasta_file" value="SRR12352293_1.fasta" ftype="fasta"/>
-  			<output name="summary_out_file" ftype="txt">
+  			<param name="fasta_file" value="one_sequence.fasta" ftype="fasta"/>
+  			<output name="blastn_result_file" ftype="xml">
   				<assert_contents>
-  					<has_n_lines n="1"/>
+  					<has_n_lines n="173"/>
   				</assert_contents>
   			</output>
   		</test>

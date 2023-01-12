@@ -8,14 +8,16 @@ This script takes a fasta file and writes out the size of the file
 
 @license:    GNU GENERAL PUBLIC LICENSE v3
 
-@contact:    jpleyte@users.noreply.github.com
 @deffield    updated: 2022.11.13
 '''
 
 import argparse
 import logging
-import sys
 import os
+import sys
+import time
+
+from Bio.Blast import NCBIWWW
 
 __version__ = "0.0.2"
 
@@ -26,13 +28,23 @@ streamHandler.setFormatter(formatter)
 logger.addHandler(streamHandler)
 logger.setLevel(logging.DEBUG)
 
-def _process(in_file:str, out_file:str):
-    file_size = os.path.getsize(in_file)
-    logger.debug(f"{in_file} is of size {file_size}. Writing to {out_file}")
-    
-    with open(out_file, mode="w") as f:
-        f.write(f"{in_file} is of size {file_size}\n")
-
+def _process(fasta_file:str, blastn_result_file:str):
+    with open(fasta_file, mode="r") as f:
+        sequence_data = f.read()
+        
+        logger.debug("Querying blastn server")
+        start_time = time.perf_counter()
+        result_handle = NCBIWWW.qblast("blastn", "nt", sequence_data)
+        end_time = time.perf_counter()
+        num_reads = sequence_data.count('\n')
+        logger.debug(f"blastn query containing {num_reads} sequences completed in {end_time - start_time:0.2f} seconds")
+        
+        blast_results = result_handle.read()
+                
+        logger.debug(f"Saving results to {blastn_result_file}")     
+        with open(blastn_result_file, 'w') as save_file:
+            save_file.write(blast_results)
+        
 def _parse_args():    
     '''
     Validate and return command line arguments.
@@ -40,12 +52,12 @@ def _parse_args():
     parser = argparse.ArgumentParser(description='A test of how scripts expect individual file parameters handle Galaxy datasets and collections.')
     
     parser.add_argument('-i', '--in_file',  
-                        help='Input FASTA',
+                        help='Input FASTA file',
                         type=argparse.FileType('r'),
                         required=True)
 
     parser.add_argument('-o', '--out_file',  
-                        help='Output text file',
+                        help='Output xml file',
                         type=argparse.FileType('w'),
                         required=True)
 
