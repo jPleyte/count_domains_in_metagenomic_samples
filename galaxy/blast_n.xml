@@ -1,4 +1,4 @@
-<tool id="blast_n" name="blast_n" version="0.0.1">
+<tool id="blast_n" name="blast_n" version="0.0.2">
 	<description>
 		Submit a collection of fasta reads to blastn and output the organism  
 	</description>
@@ -8,38 +8,27 @@
 	
 	<version_command><![CDATA[
 		python $__tool_directory__/../python/src/jpleyte/reproduce/pmid33033132/blast_n.py --version
-		]]>
+	]]>
 	</version_command>
 	
 	<command detect_errors="exit_code"><![CDATA[
-		output_directory="\$(dirname ${summary_out_file})" &&
-		## echo "output_directory=\$output_directory" &&
-		tmp_file_name_1="\$(basename ${fasta_collection.forward})".size &&
-		echo "tmp_file_name_1=\$tmp_file_name_1" && 
 		python $__tool_directory__/../python/src/jpleyte/reproduce/pmid33033132/blast_n.py
-				--in_file "${fasta_collection.forward}" 
-				--out_file "\$output_directory/\$tmp_file_name_1" &&
-		tmp_file_name_2="\$(basename ${fasta_collection.reverse})".size &&
-		python $__tool_directory__/../python/src/jpleyte/reproduce/pmid33033132/blast_n.py
-				--in_file "${fasta_collection.reverse}" 
-				--out_file "\$output_directory/\$tmp_file_name_2" &&
-		cat "\$output_directory/\$tmp_file_name_1" > "${summary_out_file}" &&
-		cat "\$output_directory/\$tmp_file_name_2" >> "${summary_out_file}"
-	]]></command>
+			--in_file "${fasta_file}" 
+			--out_file "${summary_out_file}"
+	]]>
+	</command>
 	
 	<environment_variables>
 		<environment_variable name="PYTHONPATH">$__tool_directory__/../python/src</environment_variable>
 	</environment_variables>
 	
 	<inputs>
-		<!-- type="data" -->
-		<param name="fasta_collection" 
+		<param name="fasta_file" 
 		       optional="false" 
 		       format="fasta"
-		       type="data_collection" 
-			   collection_type="paired" 
-		       label="Select a paired collection"
-		       help="A dataset collection of paired fasta files."/>
+		       type="data"
+		       label="Fasta file"
+		       help="Fasta file"/>
 	</inputs>
 	
 	<outputs>
@@ -48,15 +37,10 @@
 	
 	<tests>
    		<test>
-  			<param name="fasta_collection">
-  				<collection type="paired">
-                    <element name="forward" value="SRR12352293_1.fasta" ftype="fasta" />
-                    <element name="reverse" value="SRR12352293_2.fasta" ftype="fasta" />
-  				</collection>
-  			</param>  			
+  			<param name="fasta_file" value="SRR12352293_1.fasta" ftype="fasta"/>
   			<output name="summary_out_file" ftype="txt">
   				<assert_contents>
-  					<has_n_lines n="2"/>
+  					<has_n_lines n="1"/>
   				</assert_contents>
   			</output>
   		</test>

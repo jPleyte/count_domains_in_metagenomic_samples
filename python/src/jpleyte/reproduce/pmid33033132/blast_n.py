@@ -17,7 +17,7 @@ import logging
 import sys
 import os
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 logger = logging.getLogger()
 streamHandler = logging.StreamHandler(sys.stdout)
@@ -30,7 +30,7 @@ def _process(in_file:str, out_file:str):
     file_size = os.path.getsize(in_file)
     logger.debug(f"{in_file} is of size {file_size}. Writing to {out_file}")
     
-    with open(f"{out_file}", mode="w") as f:
+    with open(out_file, mode="w") as f:
         f.write(f"{in_file} is of size {file_size}\n")
 
 def _parse_args():    
