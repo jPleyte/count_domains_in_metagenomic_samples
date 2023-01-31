@@ -2,7 +2,13 @@
 
 The goal of this project is to reproduce the results documented in the 2020 paper titled Metagenomics of Wastewater Influent from Southern California Wastewater Treatment Facilities in the Era of COVID-19 (1). In this project 
 
-This project uses the same dataset from the Potham et al paper but uses its own set of tools to perform the analysis. For example, rather than using  Kraken 2 (2) to assign taxonomy to reads, I use Python to submit Fasta data to BLAST (3) using Biopython's Bio.Blast.NCBIWWW module (4). Each step is carried out using a Galaxy (5) pipeline; from downloading the publicly available data and performing QC, to analysing the data and generating reports. 
+This project uses the same dataset from the Potham et al paper but uses different tools to perform the analysis. For example, rather than using  Kraken 2 (2) to assign taxonomy to reads, I use Python to submit Fasta data to BLAST (3) using Biopython's Bio.Blast.NCBIWWW module (4). Each step is carried out using a Galaxy (5) pipeline; from downloading the publicly available data and performing QC, to analysing the data and generating reports. 
+
+## Setup and Configuration
+
+The pipeline depends on the file [taxid2parents.tsv](https://www.genome.jp/tools-bin/taxsummary?d=taxid2parents.tsv) for mapping species to domain. 
+
+Specify e-value trheshold 
 
 ## Pipeline Steps
 

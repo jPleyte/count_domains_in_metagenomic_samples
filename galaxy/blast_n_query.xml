@@ -1,4 +1,4 @@
-<tool id="blast_n" name="blast_n" version="0.0.3">
+<tool id="blast_n" name="blast_n" version="0.0.4">
 	<description>
 		Submit a fasta file to blastn and output the xml response.  
 	</description>
@@ -29,11 +29,25 @@
 		       format="fasta"
 		       type="data"
 		       label="Fasta file"
-		       help="Fasta file"/>
+		       help="Fasta file that will be submitted to blastn."/>
+		
+		<param name="csv_file"
+			   optional="false"
+			   format="csv"
+			   type="data"
+			   label="CSV file"
+			   help="CSV file containing blastn query results."/>
+			   
+	 	<param name="e_value"
+	 		   optional="true"
+	 		   default="1e-20"
+	 		   type="string"
+	 		   label="e-value threshold"
+	 		   help="Filter blastn results including only those with an e-value equal to or greater than this value"/>			   
 	</inputs>
 	
 	<outputs>
-		<data name="blastn_result_file" label="blastn query result" format="xml"/>
+		<data name="blastn_result_file" label="blastn query result" format="csv"/>
 	</outputs>
 	
 	<tests>
