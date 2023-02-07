@@ -16,6 +16,8 @@
 		python $__tool_directory__/../python/src/jpleyte/reproduce/pmid33033132/blast_n.py
 			--in_file "${fasta_file}" 
 			--out_file "${blastn_result_file}"
+			--taxid2parents "${taxid2parents_file}"
+			--e_value "${e_value}"
 	]]>
 	</command>
 	
@@ -37,6 +39,13 @@
 			   type="data"
 			   label="CSV file"
 			   help="CSV file containing blastn query results."/>
+			   
+		<param name="taxid2parents_file"
+			   optional="false"
+			   format="tsv"
+			   type="data"
+			   label="taxid2parents file"
+			   help="TSV file containing mappings from species to domain (see https://www.genome.jp/tools-bin/taxsummary)"/>
 			   
 	 	<param name="e_value"
 	 		   optional="true"
