@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
         query_results.close()
         self.assertEqual(193, len(taxa), "Taxa list size")
 
-
+    
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

@@ -12,15 +12,12 @@
     /opt/bioinformatics/sratoolkit.3.0.1-mac64/bin/fasterq-dump --version
 	]]></version_command>
   
-  	<!-- /opt/bioinformatics/sratoolkit.3.0.1-ubuntu64/bin/fasterq-dump - -split-3 -->
-  	<!-- /opt/bioinformatics/sratoolkit.3.0.1-mac64/bin/fasterq-dump -->
     <command detect_errors="exit_code"><![CDATA[
-        /opt/bioinformatics/sratoolkit.3.0.1-mac64/bin/fasterq-dump
-        --split-3        
-        #if $limit_fasta_lines > 0:
-          --row-limit $limit_fasta_lines
-        #end if
-        $sra_id        
+        /opt/bioinformatics/sratoolkit.3.0.1-mac64/bin/fasterq-dump --split-3 --row-limit 3 SRR12352293
+        &&
+        /opt/bioinformatics/sratoolkit.3.0.1-mac64/bin/fasterq-dump --split-3 --row-limit 3 SRR12352294
+        &&
+        /opt/bioinformatics/sratoolkit.3.0.1-mac64/bin/fasterq-dump --split-3 --row-limit 3 SRR12352295
 ]]></command>
     
     <environment_variables>
@@ -35,8 +32,10 @@
     
     <outputs>
 		<collection name="fastq_out_paired" type="paired" label="Paired FASTA files for ${sra_id}">
-    		<data name="forward" from_work_dir="SRR12352293_1.fastq" format="fastq"/>
-    		<data name="reverse" from_work_dir="SRR12352293_2.fastq" format="fastq"/>
+<!--     		<data name="forward" from_work_dir="SRR12352293_1.fastq" format="fastq"/>
+    		<data name="reverse" from_work_dir="SRR12352293_2.fastq" format="fastq"/> -->
+    		<!-- <discover_datasets pattern="SRR[0-9]+_[1|2]\.fastq" format="fastq" visible="true"/> -->
+    		<discover_datasets pattern="__designation_and_ext__" format="fastq" visible="true"/>
    		</collection>
     </outputs>
     
@@ -44,7 +43,7 @@
   		<test>
   			<param name="sra_id" value="SRR12352293"/>
   			<param name="limit_fasta_lines" value="3"/>  			      		
-      		<output_collection name="fastq_out_paired" type="paired">
+       		<output_collection name="fastq_out_paired" type="paired">
       			<element name="forward">
 	      			<assert_contents>
 	      				<has_n_lines n="72"/>

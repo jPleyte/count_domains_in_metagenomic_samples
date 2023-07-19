@@ -6,7 +6,7 @@ This project uses the same dataset from the Potham et al paper but uses differen
 
 ## Setup and Configuration
 
-The pipeline depends on the file [taxid2parents.tsv](https://www.genome.jp/tools-bin/taxsummary?d=taxid2parents.tsv) for mapping species to domain. 
+The pipeline depends on the file [taxid2parents.tsv](https://www.genome.jp/tools-bin/taxsummary?d=taxid2parents.tsv) (1.2GB) for mapping species to domain. 
 
 Specify e-value trheshold 
 

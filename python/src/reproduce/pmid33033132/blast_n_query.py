@@ -2,7 +2,12 @@
 # encoding: utf-8
 '''
 This script takes a fasta file, queries blastn, and writes out the matching species associated with each sequence. 
-
+Step 1. The ``_query`` function sends a fasta file to blast_n and recieves a large xml result.  
+Step 2. The ``_extract_taxa`` function parses the xml file. The <Hit>|<Hit_def> tag contains the species definition. The <Hit>|<Hit_accession> field 
+        is the accession number. Both values are added to a new Taxon object. 
+Step 3. The ``_update_domain`` function uses the taxid2parents input file to find the domain for each species and add that to the Taxon object. 
+Step 4. The ``_write`` function writes all the Taxon objects out to csv file.   
+ 
 @author:     jpleyte
 @copyright:  2022 Jay Pleyte. All rights reserved.
 
@@ -20,7 +25,6 @@ import re
 
 from Bio.Blast import NCBIWWW, NCBIXML
 from reproduce.pmid33033132.taxon import Taxon
-from Bio import Entrez, SeqIO
 
 __version__ = "0.0.4"
 
@@ -32,6 +36,9 @@ logger.addHandler(streamHandler)
 logger.setLevel(logging.DEBUG)
 
 def _query(fasta_file:str):
+    '''
+    Send a fasta file to blastn and get back xml result  
+    '''
     with open(fasta_file, mode="r") as f:
         sequence_data = f.read()
         
@@ -55,7 +62,7 @@ def _query(fasta_file:str):
 
 def _parse_species(blastn_hitdef: str):
     '''
-    Parse the species out of a blastn Hit_def string 
+    Parse the species out of a blastn Hit_def string. 
     '''
     
     # Barbus barbus genome assembly, chromosome: 24
@@ -170,8 +177,10 @@ def _update_domain(taxid2parents_file: str, taxa: list):
         for taxon in taxa:
             line_n = line_n + 1
             if taxon.species in species_to_domain_map:
+                # Species-domain is already mapped
                 taxon.domain = species_to_domain_map[taxon.species]
             elif taxon.species:
+                # Find the domain mapped to the species and update the map
                 taxon.domain = _lookup_domain(tax_csv, taxon.species)
                 species_to_domain_map[taxon.species] = taxon.domain
                 tax_file.seek(0)
@@ -183,6 +192,7 @@ def _update_domain(taxid2parents_file: str, taxa: list):
         
 def _write(out_file: str, taxa: list):
     '''
+    Save the list of Taxon recores to csv file
     '''
     fields = ['sample', 'accession', 'e_value', 'hitdef', 'species', 'domain']
     with open(out_file, 'w') as csvfile:
