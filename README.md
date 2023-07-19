@@ -1,14 +1,16 @@
-# Reproduce Results from Metagenomics of Wastewater Influent From Southern California
+# Analyse Metagenomic Samples and Identify the Abundances of Taxonomic Domains
 
-The goal of this project is to reproduce the results documented in the 2020 paper titled Metagenomics of Wastewater Influent from Southern California Wastewater Treatment Facilities in the Era of COVID-19 (1). In this project 
+This project contains the tools necessary for setting up a Galaxy pipeline that retrieves metagenomic samples in FASTA format and uses BLAST to identify the taxa found in the samples. 
 
-This project uses the same dataset from the Potham et al paper but uses different tools to perform the analysis. For example, rather than using  Kraken 2 (2) to assign taxonomy to reads, I use Python to submit Fasta data to BLAST (3) using Biopython's Bio.Blast.NCBIWWW module (4). Each step is carried out using a Galaxy (5) pipeline; from downloading the publicly available data and performing QC, to analysing the data and generating reports. 
+The default configuration of this project reproduces the results of an experiment documented in the 2020 paper titled Metagenomics of Wastewater Influent from Southern California Wastewater Treatment Facilities in the Era of COVID-19 (1). 
+
+This project uses the same dataset from the Potham et al paper but uses different tools to perform the analysis. For example, rather than using  Kraken2 (2) to assign taxonomy to reads, I use Python to submit Fasta data to BLAST (3) using Biopython's Bio.Blast.NCBIWWW module (4). Each step is carried out using a Galaxy (5) pipeline. The piopeline downloads the publicly available data, performs QC, analyses the data and generates reports. 
 
 ## Setup and Configuration
 
 The pipeline depends on the file [taxid2parents.tsv](https://www.genome.jp/tools-bin/taxsummary?d=taxid2parents.tsv) (1.2GB) for mapping species to domain. 
 
-Specify e-value trheshold 
+Specify e-value theshold (https://sequenceserver.com/blog/blast-e-value-meaning/
 
 ## Pipeline Steps
 
